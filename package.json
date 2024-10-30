@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "global": "^4.4.0",
+    "typescript": "^5.6.3"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node ."
+  },
+  "name": "time-zone",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/harwarl/time-zone.git",
+  "author": "harwarl <harwarl87@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.8.4",
+    "tsx": "^4.19.2"
+  }
+}
