@@ -1,6 +1,5 @@
 import { config } from "dotenv";
 import { Client, Events, GatewayIntentBits } from "discord.js";
-
 config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
