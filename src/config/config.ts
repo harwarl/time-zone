@@ -8,7 +8,7 @@ if (!DISCORD_CLIENT_ID || !DISCORD_TOKEN) {
   throw new Error("Missing Environment Variables");
 }
 
-export const config = {
+export const config: Record<string, string> = {
   DISCORD_CLIENT_ID,
   DISCORD_TOKEN,
 };
