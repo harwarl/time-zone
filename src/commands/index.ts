@@ -1,11 +1,11 @@
 import * as ping from "./ping";
 import * as settimezone from "./settimezone";
 import * as showtimezone from "./showtimezone";
-import * as updatetimezone from "./updatetimezone";
+import * as convert from "./convert";
 
 export const commands = {
   ping,
   settimezone,
   showtimezone,
-  updatetimezone,
+  convert,
 };

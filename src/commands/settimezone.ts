@@ -7,53 +7,77 @@ export const data = new SlashCommandBuilder()
   .addStringOption((option) =>
     option
       .setName("zones")
-      .setDescription("the time Zones")
+      .setDescription("The time zone (e.g., GMT-4, America/New_York)")
       .setRequired(true)
       .addChoices(
-        { name: "GMT-12", value: "GMT-12" },
-        { name: "GMT-11", value: "GMT-11" },
-        { name: "GMT-10", value: "GMT-10" },
-        { name: "GMT-9", value: "GMT-9" },
-        { name: "GMT-8", value: "GMT-8" },
-        { name: "GMT-7", value: "GMT-7" },
-        { name: "GMT-6", value: "GMT-6" },
-        { name: "GMT-5", value: "GMT-5" },
-        { name: "GMT-4", value: "GMT-4" },
-        { name: "GMT-3", value: "GMT-3" },
-        { name: "GMT-2", value: "GMT-2" },
-        { name: "GMT-1", value: "GMT-1" },
-        { name: "GMT+0", value: "GMT+0" },
-        { name: "GMT+1", value: "GMT+1" },
-        { name: "GMT+2", value: "GMT+2" },
-        { name: "GMT+3", value: "GMT+3" },
-        { name: "GMT+4", value: "GMT+4" },
-        { name: "GMT+5", value: "GMT+5" },
-        { name: "GMT+6", value: "GMT+6" },
-        { name: "GMT+7", value: "GMT+7" },
-        { name: "GMT+8", value: "GMT+8" },
-        { name: "GMT+9", value: "GMT+9" },
-        { name: "GMT+10", value: "GMT+10" },
+        { name: "UTC", value: "UTC" },
         { name: "America/New_York", value: "America/New_York" },
-        { name: "Europe/London", value: "Europe/London" }
+        { name: "America/Chicago", value: "America/Chicago" },
+        { name: "America/Denver", value: "America/Denver" },
+        { name: "America/Los_Angeles", value: "America/Los_Angeles" },
+        { name: "Pacific/Honolulu", value: "Pacific/Honolulu" },
+        { name: "Europe/London", value: "Europe/London" },
+        { name: "Europe/Paris", value: "Europe/Paris" },
+        { name: "Europe/Moscow", value: "Europe/Moscow" },
+        { name: "Asia/Shanghai", value: "Asia/Shanghai" },
+        { name: "Asia/Tokyo", value: "Asia/Tokyo" },
+        { name: "Asia/Seoul", value: "Asia/Seoul" },
+        { name: "Asia/Hong_Kong", value: "Asia/Hong_Kong" },
+        { name: "Australia/Sydney", value: "Australia/Sydney" },
+        { name: "Australia/Perth", value: "Australia/Perth" },
+        { name: "Pacific/Auckland", value: "Pacific/Auckland" },
+        { name: "Pacific/Fiji", value: "Pacific/Fiji" },
+        { name: "America/Sao_Paulo", value: "America/Sao_Paulo" },
+        { name: "America/Santiago", value: "America/Santiago" },
+        { name: "Africa/Lagos", value: "Africa/Lagos" },
+        { name: "Africa/Johannesburg", value: "Africa/Johannesburg" },
+        { name: "Africa/Nairobi", value: "Africa/Nairobi" },
+        { name: "Atlantic/Stanley", value: "Atlantic/Stanley" }
       )
   );
 
 export async function execute(interaction: CommandInteraction) {
-  if (!interaction.user || interaction.options.data.length < 0) {
-    return interaction.reply("could not save time zone");
+  await interaction.deferReply({ ephemeral: true });
+
+  const { options } = interaction;
+  const timeZone = options.get("zones");
+  if (!interaction.user || !timeZone) {
+    return interaction.reply("Invalid Time Zone");
   }
 
   if (interaction.user.bot) {
-    return interaction.reply("Bots can set up time zones");
+    return interaction.reply("Bots cannot set up time zones");
   }
 
-  //save the user configuration in the database
-  //Check if user is in the database
+  const currentUser = interaction.user;
+  const timeZoneOption = timeZone.value;
+
+  // Save the user configuration in the database
   const { error, timeZoneDB, mongoClient } = await createDB();
+
   if (error) {
-    console.log(error);
+    console.error(error);
     return interaction.reply("Error setting up db");
   }
 
-  return interaction.reply("Time Zone Set");
+  try {
+    // Code to check if the user exists and save/update the time zone
+    if (timeZoneDB) {
+      await timeZoneDB
+        .collection("users")
+        .updateOne(
+          { userId: currentUser.id, username: currentUser.username },
+          { $set: { timeZone: timeZoneOption } },
+          { upsert: true }
+        );
+      return interaction.editReply({
+        content: `Time Zone ${timeZoneOption} Set for ${currentUser.username}`,
+      });
+    }
+  } catch (dbError) {
+    console.error(dbError);
+    return interaction.reply("Error saving time zone to the database");
+  } finally {
+    await mongoClient?.close();
+  }
 }

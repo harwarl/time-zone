@@ -40,4 +40,19 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+
+  console.log(message);
+
+  const dateRegex = /\b(\d{1,2}(?:am|pm))(?: (\d{1,2}\/\d{1,2}\/\d{4}))?\b/gi;
+
+  if (dateRegex.test(message.content)) {
+    message.channel.send({
+      content:
+        "React with 📅 or use `/convert <messageID>` to get this time in your time zone.",
+    });
+  }
+});
+
 client.login(BOTCONFIG.DISCORD_TOKEN);
