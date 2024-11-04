@@ -18,6 +18,31 @@ export const data = new SlashCommandBuilder()
       .setName("timezone")
       .setDescription("Time Zone of the author to yours")
       .setRequired(true)
+      .setChoices(
+        { name: "UTC", value: "UTC" },
+        { name: "America/New_York", value: "America/New_York" },
+        { name: "America/Chicago", value: "America/Chicago" },
+        { name: "America/Denver", value: "America/Denver" },
+        { name: "America/Los_Angeles", value: "America/Los_Angeles" },
+        { name: "Pacific/Honolulu", value: "Pacific/Honolulu" },
+        { name: "Europe/London", value: "Europe/London" },
+        { name: "Europe/Paris", value: "Europe/Paris" },
+        { name: "Europe/Moscow", value: "Europe/Moscow" },
+        { name: "Asia/Shanghai", value: "Asia/Shanghai" },
+        { name: "Asia/Tokyo", value: "Asia/Tokyo" },
+        { name: "Asia/Seoul", value: "Asia/Seoul" },
+        { name: "Asia/Hong_Kong", value: "Asia/Hong_Kong" },
+        { name: "Australia/Sydney", value: "Australia/Sydney" },
+        { name: "Australia/Perth", value: "Australia/Perth" },
+        { name: "Pacific/Auckland", value: "Pacific/Auckland" },
+        { name: "Pacific/Fiji", value: "Pacific/Fiji" },
+        { name: "America/Sao_Paulo", value: "America/Sao_Paulo" },
+        { name: "America/Santiago", value: "America/Santiago" },
+        { name: "Africa/Lagos", value: "Africa/Lagos" },
+        { name: "Africa/Johannesburg", value: "Africa/Johannesburg" },
+        { name: "Africa/Nairobi", value: "Africa/Nairobi" },
+        { name: "Atlantic/Stanley", value: "Atlantic/Stanley" }
+      )
   );
 
 export async function execute(interaction: CommandInteraction) {
