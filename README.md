@@ -25,7 +25,7 @@ The bot currently supports the following commands:
    - **Usage**: `/showtimezone`
 
 4. **Convert**: Convert time between different timezones.
-   - **Usage**: `/convert [time] [from timezone] [to timezone]`
+   - **Usage**: `/convert [time] [from timezone]`
 
 ## Setup
 
